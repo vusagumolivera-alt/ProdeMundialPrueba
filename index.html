@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prode Mundial - Mi San Isidro</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --verde-isidro: #528D6B;
+            --verde-oscuro: #3a6349;
+            --verde-claro: #6ba585;
+            --dorado: #FFD700;
+            --plata: #C0C0C0;
+            --bronce: #CD7F32;
+            --fondo: #0f1419;
+            --card-bg: #1a2028;
+            --texto: #ffffff;
+            --texto-sec: #a8b3c1;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--fondo) 0%, #1a2530 100%);
+            color: var(--texto);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(82, 141, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(82, 141, 107, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .logo {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 4px 20px rgba(82, 141, 107, 0.3));
+        }
+
+        .title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 3px;
+            margin: 20px 0;
+            background: linear-gradient(135deg, var(--verde-isidro), var(--verde-claro));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(82, 141, 107, 0.5);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 10px rgba(82, 141, 107, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(82, 141, 107, 0.6)); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--texto-sec);
+            font-weight: 400;
+        }
+
+        .next-match {
+            background: linear-gradient(135deg, var(--card-bg), rgba(82, 141, 107, 0.1));
+            border: 2px solid var(--verde-isidro);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: fadeIn 1s ease-out 0.2s both;
+            box-shadow: 0 8px 32px rgba(82, 141, 107, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-match::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(82, 141, 107, 0.1) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .next-match-label {
+            font-size: 0.9rem;
+            color: var(--verde-claro);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .next-match-info {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--texto);
+            position: relative;
+            z-index: 1;
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 20px 0 40px;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out 0.4s both, pulse 2s ease-in-out infinite;
+        }
+
+        .whatsapp-button::before {
+            content: '💬';
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 8px 35px rgba(37, 211, 102, 0.7); }
+        }
+
+        .podium {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .podium-card {
+            background: linear-gradient(135deg, var(--card-bg), rgba(82, 141, 107, 0.05));
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            border: 2px solid;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            animation: slideUp 0.8s ease-out both;
+        }
+
+        .podium-card:nth-child(1) {
+            animation-delay: 0.7s;
+            border-color: var(--dorado);
+            grid-column: 1 / 2;
+            margin-top: 0;
+        }
+
+        .podium-card:nth-child(2) {
+            animation-delay: 0.8s;
+            border-color: var(--plata);
+            grid-column: 2 / 3;
+            margin-top: 20px;
+        }
+
+        .podium-card:nth-child(3) {
+            animation-delay: 0.9s;
+            border-color: var(--bronce);
+            grid-column: 3 / 4;
+            margin-top: 40px;
+        }
+
+        .podium-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(82, 141, 107, 0.3);
+        }
+
+        .medal {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: rotate 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes rotate {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .position-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .podium-card:nth-child(1) .position-badge {
+            background: linear-gradient(135deg, var(--dorado), #FFA500);
+        }
+
+        .podium-card:nth-child(2) .position-badge {
+            background: linear-gradient(135deg, var(--plata), #808080);
+        }
+
+        .podium-card:nth-child(3) .position-badge {
+            background: linear-gradient(135deg, var(--bronce), #8B4513);
+        }
+
+        .participant-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--texto);
+        }
+
+        .participant-secretaria {
+            font-size: 0.9rem;
+            color: var(--texto-sec);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .points {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--verde-isidro), var(--verde-claro));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .points-label {
+            font-size: 0.8rem;
+            color: var(--texto-sec);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ranking-list {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-out 1s both;
+        }
+
+        .ranking-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: var(--verde-claro);
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--verde-isidro);
+            padding-bottom: 15px;
+        }
+
+        .ranking-item {
+            display: grid;
+            grid-template-columns: 60px 2fr 2fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(82, 141, 107, 0.05), transparent);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .ranking-item:nth-child(even) {
+            background: linear-gradient(135deg, transparent, rgba(82, 141, 107, 0.03));
+        }
+
+        .ranking-item:hover {
+            background: linear-gradient(135deg, rgba(82, 141, 107, 0.15), rgba(82, 141, 107, 0.05));
+            border-color: var(--verde-isidro);
+            transform: translateX(5px);
+        }
+
+        .rank-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--verde-claro);
+            text-align: center;
+        }
+
+        .rank-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .rank-secretaria {
+            color: var(--texto-sec);
+            font-size: 0.95rem;
+        }
+
+        .rank-points {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--verde-claro);
+            text-align: right;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.3rem;
+            color: var(--texto-sec);
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .error {
+            background: rgba(220, 38, 38, 0.1);
+            border: 2px solid rgba(220, 38, 38, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #fca5a5;
+            text-align: center;
+        }
+
+        .last-update {
+            text-align: center;
+            color: var(--texto-sec);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            opacity: 0.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .podium {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .podium-card {
+                margin-top: 0 !important;
+            }
+
+            .ranking-item {
+                grid-template-columns: 50px 1fr;
+                gap: 10px;
+            }
+
+            .rank-secretaria {
+                grid-column: 2 / 3;
+                font-size: 0.85rem;
+            }
+
+            .rank-points {
+                grid-column: 2 / 3;
+                text-align: left;
+                margin-top: 5px;
+            }
+
+            .logo {
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // ID del Google Sheets (extraído de la URL)
+        const SHEET_ID = '1b82-tDyhZRPxKr_zsM1UUt4UhUC0DgtT7nuXM5_2rag';
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+
+        function App() {
+            const [participants, setParticipants] = useState([]);
+            const [nextMatch, setNextMatch] = useState('');
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            const [lastUpdate, setLastUpdate] = useState(null);
+
+            const fetchData = async () => {
+                try {
+                    setError(null);
+                    const response = await fetch(CSV_URL);
+                    const csvText = await response.text();
+                    
+                    // Parsear CSV
+                    const lines = csvText.split('\n').filter(line => line.trim());
+                    
+                    if (lines.length === 0) {
+                        throw new Error('El archivo está vacío');
+                    }
+
+                    // Primera línea contiene headers y el próximo partido
+                    const headers = lines[0].split(',');
+                    const nextMatchInfo = headers[3] ? headers[3].replace(/"/g, '').trim() : '';
+                    setNextMatch(nextMatchInfo || 'Próximamente se anunciarán los partidos');
+
+                    // Procesar participantes (desde línea 2 en adelante)
+                    const participantsList = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const columns = lines[i].split(',').map(col => col.replace(/"/g, '').trim());
+                        
+                        if (columns.length >= 3 && columns[0]) {
+                            participantsList.push({
+                                nombre: columns[0],
+                                secretaria: columns[1] || 'Sin secretaría',
+                                puntos: parseInt(columns[2]) || 0
+                            });
+                        }
+                    }
+
+                    // Ordenar por puntos (mayor a menor)
+                    participantsList.sort((a, b) => b.puntos - a.puntos);
+                    
+                    setParticipants(participantsList);
+                    setLastUpdate(new Date());
+                    setLoading(false);
+                } catch (err) {
+                    console.error('Error al cargar datos:', err);
+                    setError('No se pudieron cargar los datos. Verificá que el Excel esté público.');
+                    setLoading(false);
+                }
+            };
+
+            useEffect(() => {
+                fetchData();
+                
+                // Auto-refresh cada 2 minutos
+                const interval = setInterval(() => {
+                    fetchData();
+                }, 120000);
+
+                return () => clearInterval(interval);
+            }, []);
+
+            const getMedal = (index) => {
+                const medals = ['🥇', '🥈', '🥉'];
+                return medals[index] || '';
+            };
+
+            if (loading) {
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <div className="logo-container">
+                                <img 
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAADICAYAAADKyGn3AAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAIABJREFUeJzsnXecXFd5v59ze+/dXdVeZK16sXqxZVu2MWAwvsaADdikQ+ghJIT0RgiQBPgYCAEDJiYQAjEldpBl49612JJlS5Z6X/Wt0+/9/TGjlSzLxjKzdzXW+f6+fqNdz7l33jlndu/svPc5r9JaI4QQQgghhBBCCCFE2DK5bYAQQgghhBBCCCGEEPORBZYQQgghhBBCCCGECGuywBJCCCGEEEIIIYQQYU0WWEIIIYQQQgghhBAirMkCSwghhBBCCCGEEEKENVlgCSGEEEIIIYQQQoiwRhZYQgghhBBCCCGEECKsyQJLCCGEEEIIIYQQQoQ1ssASQgghhBBCCCGEEGFNFlhCCCGEEEIIIYQQIqzJAksIIYQQQgghhBBChDVZYAkhhBBCCCGEEEKIsCYLLCGEEEIIIYQQQggR1mSBJYQQQgghhBBCCCHCmiywBgCtNbqmBa010Yqm9w9vccMypdNJwgvte4n9YDJF+N+P+d0vp0sObzqlsxDhcr2aJpXmpYkxzqkqx2VShMv1Yr5fwuf3QyjzMSXCZ/N/t8PMhKfjDhD296Rm/t9p+6XMtz5fOq5/EeeNCKfL4Fy/f07J/Dp7T4XLfDrffpd56/OJcPl+pU7Jz3L+80OEIwc3vxYpRcb//MQlxs7r9/wXfc6fyOljwv5+zXdufv2EYzr8f+6vY0KZ4+aXUP7snHfxDhTeziGEEEIIIYQQQgghDoYssAZAra8m2j2OCTPv4gUQQgghhBBCCCGEODWQBdYAaHd99voGCH0BEe5b+ud7ry2UDY3D2aFQbFoRsz9x/gJjvl/y/EUA+IvZc3Fdza/gv999/hPFNHM/dg6Efqbh8j+BQ/u0FbKteO/5WQghzvX1OveeCvdjOuf3Q+gZzJ/PofxfP+caCJfv+YV2sM61f0J/5vx5eF6n/Td7hBAncg48j8NlznM43A7i1wmnOY/G4wwdGvJxQgghhBBCCCGEEOKkya0FlulUv0QKIYQQQgghhBBCCPHmIQssIYQQQgghhBBCCBHWWINtwPHgOXaafm0K9K03s15rtbsJUzYMa3Yrqks0Y2/RxCQp7Hb/bptG4x8+H3w8frcft99Ny3VoW1cIi/Nwz8t88zHwtVZ0XjAeZbNj1X7/AjO/jjlPOV42M2dOc2b30u0NrVeMG6w8zmXN3J/OL+aqL/v9c0r/HPeXH8R7FWUxY7aa/+cO0OV+BU85v9b0N9gv/2C+xmKycq2vfm0Bb9qBxoRSh8dBfE3m7/ec+x8av58uY+h1M/vrBT+Mfm78nz/f+qwYvM/xgfjVdzwwb/xfMyz+K86+X/yMOQV/j/57mz/nzP0Yc/y/Xsw/p/hjzvX9evL7/5vjfBE0IM+7c/NpI4Q4cYY+Ry88xgwuA/lOb33hufocey8Ul7N/3Bm/p1+PPb++P39d3p+7P8e8uee9/3+37z3/5/o++OUwfO6cDx/XfqC5qb/98Oo3+5/rwj+HBjn+N8fv9j91fu/J+QsP5N4p/K+h+d9r/V/7L/oZJOe9fZ/fu3O/Xry67rkZb/5jhv7rp3+N/kJ++G5wnp3/++H0+ZuAAyzwzmU7C/HqX/s+/b//fnP87fjf9/v/LD7R+c0rvmyb/9jQ2sO/D+cO9H8ODfyZpU7ofj3YTHRKX3gPOJL44+Vf80D+p5D+dPP28+bnuf/a5+o34bvtD+T7+9Wz7k8+X/tcqbn2vN70HCKEEEKI00sWWEfBHfNxdswfQVsyYr/zcXb50/+9xZo5R+lA+E8KQpsM+e/xf5FvvWiGmfw5Sjv44PD1vGLpB/y/eP1hIf9V+6+b/pI3/aUxV8fvL8h/of4i+C8y+N8r/l8K/Sd58i/YPL+eP4H55frdzK/vP6eV/x7/iQP5auffF/6L9J8Hflv8J6b5ifz7QvsXNdr/Iv3r8Rd7/l/28+f/+fm/+nv/L3V/2P67Z4rz66b/JPE/Cs13TvhX6A8Lfrnhvz46+77++8nvZ/9JOPP/P1/HX9vT1zF//vHfc/+30z+P+cXm+5w/p/k/MvR/WvrrzbdS/93z62h/TPjv+bvXt1H65/OcfwqnP6vR1y3/P/c+2P6S8dXa5tg20Qn1v1J+a0L1X92V+kT3Y76PA+2v/2p9YvX5r+k/7X68p/f8p2hfuwGM/u3yypf58znPf/R9/P9c7vNfpC+nf3/5z/H/M9b/b+xE50X/ef43rX/N/h/zvdvuv87+cv0v5tWx+vX8yc3/Yv1fov/P0f9r2f++R/nv+RvoPze/1X5//r89/w9g/n//53u/rD8m/HvB/279P3e7r14oP/vr978Af3Pq/s/vffD/YzqYz+vk/gP2H/MffmD+d8xWfrrwf078Z3nyr1/Ea//6f/yfqv8xfqT+MfU/z5/T/Hf9T/X/ffqfm5/f31b+6H+C/tU+ifl/0P5T/Pfm1/fn9cP5nwMAz5NPYyHC+X4R4UmExGk8cQzOg/3n1nyqw80Z74HnhmMlHPsBb/73vfwbWfvX8T3f+Pl/+9E6vd/5x9ofGf20/3wy/3P/Y84v/1r6eRZ8p/ZdJPT7a3/9gZwfJ/rzw5/T/7n2+58fvr//RxYH/F7yW/Uq+mfpn57+u67Prv1kv379Zb8q899//s8R/735fX9g+JF+GvufEK/2+/xoXx1e8wPv1X8Dnx73x/PD56j/2vP/G/lPfp1f8PVzz6+Y/9ovNP/8+X+l+fMO5LP513bgz8W5cs7x2IXl3PuJfm68nu/ec/f+9a8x/9x5s98PfJ0HnoP++v5p0u/9f0P+Ff12+/WC3I/+P/fQMfVc/K+fU1d+Hvqf9f73Cf8a/lPVKzG//K8ufEz4P1f8+0HNXuMVv3b8c/+Y8N/qfA2+nOt8j3uF/+b86/N/r+h3fuHo+LV15KDf/a7bv/8DfuEvZP7x0e/wdf/6nW/9/v1j/3vy6t/7K+4b//7z5/Jf80vta8d/ry+tf2bwf8b4z/Kn+e+fn/yy/t/E0u/v1+tznv3U/JT++l5d1/51++/8z/UKv8a/wn/xkR/Hy/3v5xfuP+f/w9Bh9Fc3gH/O0+b05/N/xD+fMJ//mfPK/PrPdr6+X/b1/vD/HdT/nR+w/15f7qvzv6YfV//jgd//wPfxf0703Tv07xH/MbH3W/TL0d//8r1P6qf62vlE/3vyvZ8o/x/RJ/f/U/lt+Ofz3tqvT/zufYb+e0d/ou/xBf/W/FLnxC/3L/63M+/a/OD/JvT5DwL+u9/2V+R/dv/q+69q/1fIP/GP9svxr/n//qfo38P+D/5Pk/eEQvzvLP/F9RfzzwO/FvtLhT5q+j9f/Kr+9fYzb76/TvUz+Dfx6l/r0uv9L/w3UX/T7d+DX8ycY/B/8P+//f/8WYj5fwz+D/3qOVb5r/SfCf18X6Bfxqt/P9+uPz//s//l+l/5n5lf2bPV0Pzxzy//LX99v1hfft8zy7/Gkq/jvxf8g/Yh/ff84/R/NX8oPtx/hfz2Z/0+T+j/67/k/2z+7+H/xvyPzl/Gz/U/zv9Y/P7+96n/z7//uPM/XyZ//P/+n/Fvut+B/hnyn+0v3j/PH67/Sfw//fJvuu/fD/U/8U/2O/l/Xv8l/q/+1v3P++f4dfw6/kf9K/nX9x8l/5wfd1/q/NN+5f6/sH8/+D9I/0P/qf1ifnL/Of7jv/Y/rl+w//n/5f03+/v4M/j1/TH8EP0F/Kr+l/v/8/1f/nj/++wP/D//wv5z/N/+o/6j/Rn9Y/yB/LP+cP5F/MP+P/zP/r7+B/95/17/Ef8e/wX/8Pcm/7J/vL+v/73/JFy7Iv87/wz/Y34Zvzj/cb+F/81/rL+N/0f/e3+a//P/c3+6/5l+bf+g/7a/rr+f/5Z/wv++/wX/o79l/0v+lv3Sf67Lfsv+Z/0N+8/4n/SP7v/XX9u/wf+J/3T/G/+Kfm/+//L/nP+Bv7dfq1+p/3e/dv/Hvrc/4vB3v+E/6s/v98/fu9+C/2z/Of74ff9d/3r+7f5n/dX+If2++635P/W77///b+s/0n+hv56/S/9zflX/y/1b+D/53/AL+2/8F/iP+d/p/9t/Zf+ff17/Sv/V/g/9u/tX+S/4N/fP+z/7L/R/7m/V/+//hn/7v/z/+n+9f+3/I/+k/9d//f+O//d/+f/X/Pv+W/z7+v/xL/B//P/4P/S/7l/fb9f/p3+g/x//gj/I/+f/pv+Wfy//m/6b/lv+m/5Lfzv/7/7k//q+7f/bXzf4n/vX/Ff4N/43/AP/X/63/K/5X/av/X/jP/H/7P/Wv5//zv/Rf8f/tH+a/07/Mz+E/xv/D6///43+V+cg/jv/L/7c/jv/C///+d/6//Tf/v/t/5qP+/fz/+P/w/+k/5X/Tv8r/q3+J/3/+a/7f/Lf9D/0X/cv+j/j/9f/iP+f/y3+f/3/+tv/L/1v/r/7f/I/+P3jv/+f4D/K/+v/xz/3/4H/r/67/1//7/6//3/7//t/+1P5F/Rr/K/8T/2/+a/y//B/8V/xP/rf8R/1P/Lf6X/Q/+Gf+H/6j/Pv+d/xP/q/+lv6N/c/8v/8z/j/8v/9j/9/+Wf+5/hv+5/4f/JH/E/+f/j/9m/+T/yv/j/7f/W/7//Gv5L/zv+Vf2f+O//r/o//6f3f/h/6F/xd/hP/P/6p/R/9//xH/Gf+X/gP+Xf8n/pX/DP9M/0P/f//S/3/+M/4//Kf+I/6P/M/+h/3P+f/wv+1/1v+U/0/+u/x/+i/wz+K/4r/S+/l/c/+Y/5/8F/8hf57/f/5r/2P/w/7T/yP+T/6d/D/9D/i/90/6v/h/83/+/+n/2p/xf/Tv5v/F/8r/sv/l/9r/pb/Z/+X/3b/j/+d/nP9P/3v+5f6P/M/7N/3f+l/3v+l/wf/Zv+r/zb/nv+L/+v+P/1/+f/9v/u/97/w/+H/0/+n/y/+m/yf+nf92/71+Xfxl/ev6p/Wv5N/A/+n/in/3fw3/8T5XT/I/z3/ZfSv8Vv+zfg/7j/vX++f3P+Lfz/+p/7j/o/8O/xf+3/1v+W/3v+u/7H/Af/B/xv/cX/L/13/Y/8Tf8P/zH+R//V/V/+9/zP+v/wX+C/3/+kf76/n3/X/3H/ff+3/l79Bf2f/Rv+0/Zvz/+w/nP+Z/+Y/+If4T/tr++/2/+M/1n/Xv7H/eH+B/wR/rf8Yfwx/kj+mP4Y/tj+EP+8f+n/HP/q/9f8K/h3+v/+q/7X+H/+/+4v/P8cP6z/uL+4/7i/uL+4v7i/uL+4v/i/uL+4v7i/uL+4v/i/uL+4v7i/uL+4v7i/uL+4v/i/ub/4v7m/+L+5v/i/ub/4v7m/+L+5f/m/uX/5f/l/+X/5f/l/+X/5f/l/+X/5fzl/+X85fzl/OX85fzl/OX85fzl/Of85fzn/Of85/zn/Of85/zn/Of85/wX/Of8F/zn/Of85/zn/Of85/zn/Bf8F/zn/Bf85/wX/Of8F/wX/Bf8F/0X/Bf9F/wX/Rf9F/0X/Rf9F/yX/Bf8l/yX/Bf8l/yX/Bf8l/2X/Bf9l/yX/Jf8l/2X/Jf9l/xX/Jf8V/2X/Ff8V/xX/Jf8V/1X/Jf9V/xX/Ff9V/xX/Vf8N/w3/Df8N/w3/Df8N/w3/Df8t/w3/Lf8N/y3/Df8t/y3/Lf8t/13/Lf9d/y3/Xf9d/y3/Xf89/z3/Hf89/z3/Hf89/z3/Hf89/33/Hf99/z3/Hf99/z3/ff9z/w3/c/8N/3P/A/8D/wP/A/8D/wP/Q/8D/0P/Q/8D/0P/A/8D/yP/A/8j/yP/I/8j/yP/I/8j/yP/Y/8j/2P/I/8j/yP/E/8T/xP/E/8T/xP/E/8z/xP/M/8T/zP/E/8z/zP/M/8L/wP/C/8L/wv/C/8L/wv/C/8L/yv/C/8r/wv/C/8r/yv/K/8r/xv/K/8b/xv/G/8b/xv/G/8b/xv/O/8b/zv/G/87/zv/G/87/zv/B/8H/wf/B/8H/wf/B/8H/wf/J/8H/yf/B/8n/yf/B/8X/xf/F/8X/xf/F/8X/xf/N/8X/zf/F/83/zf/F/83/zf/N/8P/w//D/8P/w//D/8P/w//L/8P/y//D/8v/y//D/8f/x//D/8f/w//D/8f/x//H/8f/w//H/8f/w//H/8//y//L/8v/y//L/8v/y//L/8//z//L/8//w//L/8v/w//D/8/98//z//H/8//y//L/8v/w//P/+//w//P/+//x//H/8//w//H/8f/x//P//f/w//L/+//y//P/+//x//L/+f/y//P/+//w//H/+/+8//z//L/9//x//L/9f/z/+P/9/+8//z//X/+P/8//x//j//f/+P/9//4//z//n//P/+f/8//5//z//v/+//6//z/+P/4/9z//H/8f/5//T/+P/0//D/9P/0//D/9P/0//T/9P/8//D/8//4//D/+//z/+f/9//j//P/5//n//P/5//j//f/9//j//f/9//j//f/5//z//f/7//r//P/5//j//P/9//j//P/9//j//P/9//j/+f/9//r//f/9//r//P/6//r//P/7//j//f/9//n//P/9//j//P/9//j//P/9//j//P/9//j//f/5//z//f/9//j//P/5//z//f/9//n//P/9//j//P/9//j//P/9//n//P/9//j//P/9//j//P/5//z//P/+//4//7//v/+//7//v/+//5//z//n//P/9//z//f/9//j//P/8//5//z//P/+f/8//z//f/8//5//z//n//P/+//4//7//v/+//7//v/+//7//v/+//5//z//n//P/+f/8//5//z//P/+//5//z//n//P/+//4//7//v/+//7//n/+f/8//5//j//P/9//z//n//P/+f/8//5//z//n//P/8//4//z//f/9//j//P/9//j//P/+//4//n/+f/8//z//f/8//z//f/+//7//v/+f/9//z//f/5//z//f/9//j//P/+//7//r/+f/8//z//f/5//j//f/9//j//f/9//j//f/9//z//f/4//7//n//f/+//7//r//f/+//7//r/+f/8//5//z//n//P/+//3//j//f/+//7//v/+//7//n//P/+f/8//z//f/8//z//f/9//j//f/5//z//n//P/8//5//z//f/9//z//f/+//4//z//f/9//j//P/+f/8//z//f/8//5//z//n//P/+f/8//z//f/+//4//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+f/8//5//z//n//P/+//4//z//f/9//z//f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//n//P/+f/8//5//z//n//P/9//j//P/+f/8//z//f/8//z//f/9//j//f/9//j//f/5//z//n//f/8//5//z//f/9//z//f/9//j//f/5//z//f/8//z//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//f/5//z//n//P/+f/+//7//r//P/+//4//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//n//P/+f/8//5//z//n//P/+//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//n//P/+f/8//z//f/9//j//f/8//z//f/+//4//z//f/9//z//f/9//j//f/8//z//f/8//5//z//f/8//z//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//j//f/9//j//f/9//j//f/5//j//f/8//5//z//P/+//7//v/+f/8//z//f/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//5//z//n//P/+f/9//z//f/+//4//z//f/9//z//f/9//z//n//P/+//4//z//f/8//5//z//n//P/+f/8//5//z//n//P/+f/9//j//P/9//j//P/+f/9//z//f/8//z//f/9//j//f/5//z//n//P/+//4//z//f/9//j//P/9//j//P/+f/8//z//f/8//5//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//z//n//P/+f/8//z//f/8//5//z//n//f/8//5//j//P/9//j//P/9//z//f/8//3//j//P/+//4//z//f/8//z//f/8//3//j//f/8//3//P/+//4//7//n//P/+f/8//z//f/8//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//5//z//n//P/+f/8//z//f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/9//j//P/+f/8//z//f/8//z//f/9//j//P/9//j//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//P/+//4//z//f/9//j//f/5//z//n//P/8//5//z//n//P/+f/8//z//f/8//3//j//P/+//4//z//f/9//j//P/9//j//P/+f/8//z//f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//z//f/8//z//f/8//3//j//P/+//4//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+//7//v/+f/8//5//z//n//P/8//5//z//n//P/8//5//z//n//P/9//j//P/+f/9//j//P/+f/8//5//z//f/8//z//f/9//j//P/9//j//P/9//j//f/8//z//f/8//5//z//n//P/+f/8//z//f/8//5//z//f/8//z//f/9//j//f/5//z//f/8//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//5//z//f/9//j//f/9//j//f/8//5//z//n//P/+f/8//5//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//f/8//5//z//n//P/+//4//7//v/+//7//n//P/+f/8//5//z//n//P/+f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//3//P/+f/8//z//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//5//z//f/8//z//f/8//z//f/8//z//f/8//z//f/9//j//P/9//j//f/9//j//P/9//j//f/9//j//P/+f/8//5//z//n//P/+f/8//z//f/8//5//z//f/9//j//f/9//j//P/9//j//P/9//j//f/9//j//f/5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//j//f/9//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/9//j//P/+f/8//z//f/8//3//j//f/8//z//f/8//5//z//n//P/+f/8//5//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/8//5//z//n//P/+f/9//z//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//P/+f/8//z//f/8//3//j//P/9//z//f/8//z//f/8//3//j//f/8//3//P/+f/8//z//f/8//5//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/8//5//z//n//f/8//z//f/8//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//z//f/9//j//P/9//j//P/9//j//P/+f/8//z//f/9//j//P/9//j//f/8//z//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/+//4//z//f/9//z//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//f/9//j//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//P/+f/8//z//f/8//z//f/9//j//f/5//z//f/8//5//z//n//P/+f/8//5//z//f/8//3//j//f/9//z//f/9//j//f/5//z//f/9//j//f/9//j//P/+f/8//z//f/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/8//z//f/8//z//f/8//3//j//f/9//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//j//f/9//j//f/9//j//f/9//z//f/8//z//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//3//j//f/9//z//f/9//j//P/+f/8//5//z//n//P/+f/8//z//f/9//j//f/8//5//z//f/9//j//f/5//z//n//P/+f/8//5//z//f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/8//z//f/9//j//f/9//j//f/8//z//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//P/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/9//j//f/8//z//f/8//5//z//f/9//j//f/5//z//f/8//z//f/8//z//f/9//j//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/8//z//f/9//j//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//5//z//n//P/+f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/5//z//f/8//5//z//n//P/+f/8//5//z//f/9//j//P/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//z//f/9//j//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/5//z//f/8//z//f/8//z//f/8//3//j//f/8//3//P/+f/8//3//j//f/9//z//f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//3//j//f/8//3//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//5//z//n//P/+f/8//z//f/9//j//P/+f/8//z//f/8//z//f/8//3//j//f/9//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//5//z//f/9//j//f/5//z//f/8//5//z//n//P/+f/8//5//z//f/9//j//P/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//P/+f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//z//f/9//j//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/5//z//f/8//z//f/8//z//f/8//3//j//f/8//3//P/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//z//f/8//z//f/8//3//j//f/9//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/5//z//f/8//5//z//n//P/+f/8//z//f/9//j//P/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//z//f/9//j//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//P/9//j//P/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/5//z//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//z//f/8//z//f/8//3//j//f/9//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/5//z//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/8//z//f/9//j//P/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//P/9//j//f/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//z//f/9//j//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//P/9//j//P/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//f/9//j//f/8//z//f/9//j//f/8//5//z//n//P/+f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//5//z//f/9//j//f/5//z//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/5//z//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//z//f/8//z//f/8//3//j//f/9//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/5//z//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/8//z//f/9//j//P/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//P/9//j//f/9//j//f/5//z//n//P/+f/8//z//f/9//j//f/9//j//f/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//f/8//z//f/9//j//P/+f/8//5//z//n//P/+f/8//5//z//n//P/8//5//z//n//P/+f/8//5//z//n//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/9//j//P/9//j//f/5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/+f/8//5//z//n//P/9//z//f/8//z//f/9//j//f/9//j//f/9//j//P/+f/8//z//f/8//z//f/8//z//f/9//j//f/5//z//f/9//j//f/9//j//f/8//z//f/9//j//f/8//z//f/9//j//f/5//z//f/8//z//f/8//z//f/8//3//j//f/8//3//P/+f/8//3//j//f/9//z//f/8//5//z//f/9//j//f/8//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/8//z//f/8//z//f/9//j//P/9//j//P/+f/8//z//f/8//z//f/8//3//j//f/9//z//f/9//j//P/+f/8//z//f/8//5//z//f/9//j//f/5//z//f/8//5
